@@ -31,8 +31,7 @@ router.post('/register', async (req, res) => {
     user = new User({ fullName, email, password: hashedPassword });
     await user.save();
     
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ user: { id: user._id, fullName: user.fullName, email: user.email }, token });
+    res.json({ user: { id: user._id, fullName: user.fullName, email: user.email } });
   } catch (error) {
     res.status(500).json({ message: { error: 'Server error' } });
   }
@@ -51,9 +50,7 @@ router.post('/login', async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: { password: 'Invalid credentials' } });
     }
-    
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ user: { id: user._id, fullName: user.fullName, email: user.email }, token });
+    res.json({ user: { id: user._id, fullName: user.fullName, email: user.email }});
   } catch (error) {
     res.status(500).json({ message: { error: 'Server error' } });
   }
